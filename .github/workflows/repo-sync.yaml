@@ -24,4 +24,4 @@ jobs:
           cd target-repo
           git add .
           git commit -m "Sync changes from source repo - $(date)" || echo "No changes to commit"
-          git push https://${{ secrets.TARGET_REPO_PAT }}@github.com/${{ secrets.TARGET_REPO_PATH }} main
+          git push -f https://${{ secrets.TARGET_REPO_PAT }}@github.com/${{ secrets.TARGET_REPO_PATH }} main
