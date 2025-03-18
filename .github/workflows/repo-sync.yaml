@@ -20,8 +20,9 @@ jobs:
       - name: Clone the target repository
         run: |
           git clone https://github.com/hkg1512/transfer-test.git target-repo
+          rsync -av --exclude={'.git','.github'} . target-repo/
           cd target-repo
-          rm -rf .git .github
+          rm -rf .github
           git add .
           git commit -m "Sync changes from source repo - $(date)" || echo "No changes to commit"
           git push -f https://${{ secrets.TARGET_REPO_PAT }}@github.com/${{ secrets.TARGET_REPO_PATH }} main
