@@ -18,12 +18,12 @@ jobs:
         run: |
           git clone --depth=1 https://x-access-token:${{ secrets.DEST_REPO_PAT }}@github.com/${{ vars.DEST_USER}}/${{ vars.DEST_REPO }}.git dest_repo
           cd dest_repo
-          if [ -n "$(ls -A)" ]; then
-            echo "Destination repo is not empty. Deleting contents..."
-            git rm -rf .
-            rm -rf *  # Extra cleanup
+          if [ -n "$(git ls-files)" ]; then
+                echo "Destination repo has tracked files. Deleting contents..."
+                git rm -rf .
+                git commit -m "Cleanup old files before sync" || echo "No changes to commit"
           else
-            echo "Destination repo is already empty. Skipping cleanup."
+                echo "Destination repo is empty or has no tracked files. Skipping cleanup."
           fi
           cd ..
       - name: Copy source repo contents to destination repo
