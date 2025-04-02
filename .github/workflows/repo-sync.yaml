@@ -16,10 +16,14 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
       - name: Clone destination repository
         run: |
-          git clone --depth=1 https://x-access-token:${{ secrets.DEST_REPO_PAT }}@github.com/${{ vars.DEST_USER }}/${{ vars.DEST_REPO }}.git dest_repo
           cd dest_repo
-          git rm -rf .  # Remove all existing files
-          rm -rf *       # Extra cleanup to remove hidden files
+          if [ -n "$(ls -A)" ]; then
+            echo "Destination repo is not empty. Deleting contents..."
+            git rm -rf .
+            rm -rf *  # Extra cleanup
+          else
+            echo "Destination repo is already empty. Skipping cleanup."
+          fi
           cd ..
       - name: Copy source repo contents to destination repo
         run: |
