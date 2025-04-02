@@ -16,6 +16,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
       - name: Clone destination repository
         run: |
+          git clone --depth=1 https://x-access-token:${{ secrets.DEST_REPO_PAT }}@github.com/${{ vars.DEST_USER}}/${{ vars.DEST_REPO }}.git dest_repo
           cd dest_repo
           if [ -n "$(ls -A)" ]; then
             echo "Destination repo is not empty. Deleting contents..."
